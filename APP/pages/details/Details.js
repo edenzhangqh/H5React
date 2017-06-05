@@ -11,8 +11,10 @@ import Description from './description';//详情
 import DetailItem from '../component/DetailItem';//类似推荐
 import APP from '../port/app';//公共接口
 import device from '../component/device';//判断终端
+import LazyLoad from 'react-lazyload';
 const iswx=device.isWeiXin();
 const devicetype=device.browser();
+
 export  default  class detail extends React.Component {
     constructor(props, context) {
         super(props, context);
@@ -23,11 +25,13 @@ export  default  class detail extends React.Component {
             mainItem: {},
             promotedList: {},
             slidingWords: {},
+            slidingWord:"",
             imageList: [],
             dImageList:[],
             dialogShow:false,
             iswx:iswx,
-            iscopy:false
+            barrageI:0,
+            isBarrage:false
         }
 
     }
@@ -41,10 +45,26 @@ export  default  class detail extends React.Component {
             dialogShow:false
         })
     }
-    componentDidMount() {
+    barrageSetInterval(){
         this.setState({
-            iscopy:true
+            barrageI:this.state.barrageI+1
+        },()=>{
+            this.state.slidingWord = this.state.slidingWords[this.state.barrageI];
         })
+
+    }
+    componentDidMount() {
+        //定时滚动
+        if(this.state.slidingWords.length>0){
+            var barrage = setInterval(()=>{
+                if(this.state.barrageI < this.state.slidingWords.length){
+                    this.barrageSetInterval();
+                } else {
+                    clearInterval(barrage);
+                }
+            }, 6000);
+        }
+
         document.body.scrollTop=0;
         let self = this;
         let id = self.props.params.id;
@@ -84,6 +104,17 @@ export  default  class detail extends React.Component {
     render() {
         return (
             <div>
+                {
+                 this.state.slidingWord!=''?
+                     <div className="barrage">
+                         <ul>
+                             <li>{this.state.slidingWord}</li>
+                         </ul>
+                     </div>
+                     :
+                     ''
+                }
+
                 <Search keyWords={this.state.keyWords} cates={this.state.cates}/>
                 <ShopBtn iswx={this.state.iswx} mainItem={this.state.mainItem} dialogShow={this.dialogShow.bind(this)}/>
                 <div className="main-box">

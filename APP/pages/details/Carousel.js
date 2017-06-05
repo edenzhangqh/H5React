@@ -25,6 +25,7 @@ export default class Carousel extends React.Component {
         var opt = {
             auto: false,
             stopPropagation:true,
+            preventDefaultEvents:true,
             callback: (index) => {
                 this.setState({index: index})
             }
@@ -57,18 +58,19 @@ export default class Carousel extends React.Component {
                     <p>领券减</p>
                     <p>30元</p>
                 </div>
-                <div className="slider-cont">
-                    <ul>
-                        <ReactSwipe ref="reactSwipe" className="carousel" key={this.props.imageList.length} swipeOptions={opt}>
-                            {imageList}
-                        </ReactSwipe>
-                    </ul>
-                </div>
+                    <div className="slider-cont">
+                        <ul>
+                            <ReactSwipe ref="reactSwipe" className="carousel" key={this.props.imageList.length} swipeOptions={opt}>
+                                {imageList}
+                            </ReactSwipe>
+                        </ul>
+                    </div>
                 <div className="slider-size">
                     <ul>
                         {bannerdot}
                     </ul>
                 </div>
+
                 <div className="slider-option">
                     <div className="prev" onClick={this.prev.bind(this)}>
                         <svg viewBox="0 0 14 24" width="7" height="12" className="icon-slider">

@@ -54,6 +54,10 @@ module.exports = {
             to:__dirname+'/dist/static'
         }]),
         new CopyWebpackPlugin([{
+            from: __dirname + '/wx',
+            to:__dirname+'/dist/wx'
+        }]),
+        new CopyWebpackPlugin([{
             from: __dirname + '/common',
             to:__dirname+'/dist/js'
         }]),
